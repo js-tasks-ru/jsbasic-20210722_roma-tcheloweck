@@ -5,11 +5,11 @@ let calculator = {
   },
 
   sum() {
-    return a + b;
+    return this.a + this.b;
   },
 
   mul() {
-    return a * b;
+    return this.a * this.b;
   },
 };
 
