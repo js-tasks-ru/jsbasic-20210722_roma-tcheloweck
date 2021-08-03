@@ -1,5 +1,5 @@
 function showSalary(users, age) {
-  let filtered = users.filter(user => user.age <= age);
+  let filtered = users.filter(user => user['age'] <= age);
 
   let message = '';
   
@@ -7,5 +7,5 @@ function showSalary(users, age) {
     message += `${elem['name']}, ${elem['balance']}\n`;
   }
 
-  return message.slice(-1);
+  return message.slice(0, message.length - 1);
 }
