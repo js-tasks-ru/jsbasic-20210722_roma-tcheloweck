@@ -28,9 +28,3 @@ function highlight(table) {
     }
   }
 }
-
-// Функция `highlight` для каждой строки `tr` таблицы должна сделать следующее:
-// - Проставить класс `available/unavailable` в зависимости от значения атрибута `data-available` у ячейки `Status`. Если её значение `true` - класс `available`, если её значение `false` - класс `unavailable`.
-// - Проставить атрибут `hidden`, если атрибута `data-available` нет вообще.
-// - Проставить класс `male/female` в зависимости от содержимого ячейки `Gender`. Если её значение `m` - класс `male`, Если её значение `f` - класс `female`.
-// - Добавить inline-стиль `style="text-decoration: line-through"`, если значение ячейки `Age` меньше 18.
