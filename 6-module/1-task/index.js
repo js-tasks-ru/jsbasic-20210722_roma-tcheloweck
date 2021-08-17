@@ -14,7 +14,7 @@
  */
 export default class UserTable {
   constructor(rows) {
-    this.elem = document.createElement('table');
+    this._elem = document.createElement('table');
     
     this.addElements(rows);
   }
@@ -30,7 +30,7 @@ export default class UserTable {
   }
 
   addElements(arr) {
-    this.elem.innerHTML = `
+    this._elem.innerHTML = `
       <thead>
         <tr>
           <th>Имя</th>
@@ -42,7 +42,7 @@ export default class UserTable {
       </thead>
       <tbody></tbody>`;
 
-    let tbody = this.elem.querySelector('tbody');
+    let tbody = this._elem.querySelector('tbody');
 
     for (const item of arr) {
       let tr = document.createElement('tr');
@@ -56,5 +56,9 @@ export default class UserTable {
 
       tbody.append(tr);
     }
+  }
+
+  get elem() {
+    return this._elem;
   }
 }
