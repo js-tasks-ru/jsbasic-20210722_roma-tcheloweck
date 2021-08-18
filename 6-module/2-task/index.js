@@ -2,6 +2,8 @@ import createElement from '../../assets/lib/create-element.js';
 
 export default class ProductCard {
   constructor(product) {
+    this.id = product.id;
+
     this._elem = createElement(`
     <div class="card">
       <div class="card__top">
@@ -15,6 +17,19 @@ export default class ProductCard {
           </button>
       </div>
     </div>`);
+
+    this._elem.addEventListener('click', this.addInList);
+  }
+
+  addInList = (event) => {
+    let productAdd = new CustomEvent('product-add', 
+      {
+        detail: this.id,
+        bubbles: true
+      });
+
+    this.elem.querySelector('.card__button')
+      .dispatchEvent(productAdd);
   }
 
   get elem() {
