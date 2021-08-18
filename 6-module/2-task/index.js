@@ -2,7 +2,7 @@ import createElement from '../../assets/lib/create-element.js';
 
 export default class ProductCard {
   constructor(product) {
-    this.id = product.id;
+    this._id = product.id;
 
     this._elem = createElement(`
     <div class="card">
@@ -24,7 +24,7 @@ export default class ProductCard {
   addInList = (event) => {
     let productAdd = new CustomEvent('product-add', 
       {
-        detail: this.id,
+        detail: this._id,
         bubbles: true
       });
 
