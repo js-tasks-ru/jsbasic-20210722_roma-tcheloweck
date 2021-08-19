@@ -37,52 +37,41 @@ export default class Carousel {
     this._elem.querySelector('.carousel__arrow_left')
       .style.display = 'none';
 
-    this._elem.addEventListener('click', this.createEventChangeSlide);
+    
     this._elem.querySelector('.carousel__arrow_right')
-      .addEventListener('change', this.changeSlide);
+      .addEventListener('click', (event) => 
+        this._counterSlide = this.changeSlide(this._elem, this._counterSlide, this._slides.length - 1, event));
     this._elem.querySelector('.carousel__arrow_left')
-      .addEventListener('change', this.changeSlide);
+      .addEventListener('click', (event) => 
+        this._counterSlide = this.changeSlide(this._elem, this._counterSlide, this._slides.length - 1, event));
   }
 
 
-  createEventChangeSlide = (event) => {
-    let customEvent = new CustomEvent('change', {
-      detail: {
-        elem: this._elem, 
-        counter: this._counterSlide,
-        amount: this._slides.length - 1
-      },
+  changeSlide(elem, counter, amount, event) {
+    let carousel = elem.querySelector('.carousel__inner');
+    let slide = elem.querySelector('.carousel__slide');
 
-      bubbles: true
-    });
-
-    this._elem.querySelector('.carousel__arrow_right').dispatchEvent(customEvent);
-    this._elem.querySelector('.carousel__arrow_left').dispatchEvent(customEvent);
-  }
-
-  changeSlide(event) {
-    let carousel = event.detail.elem.querySelector('.carousel__inner');
-    let slide = event.detail.elem.querySelector('.carousel__slide');
-
-    let arrowRight = event.detail.elem.querySelector('.carousel__arrow_right');
-    let arrowLeft = event.detail.elem.querySelector('.carousel__arrow_left');
+    let arrowRight = elem.querySelector('.carousel__arrow_right');
+    let arrowLeft = elem.querySelector('.carousel__arrow_left');
 
     if (event.currentTarget === arrowLeft) {
-      event.detail.counter--;
+      counter--;
     } else if (event.currentTarget === arrowRight) {
-      event.detail.counter++;
+      counter++;
     }
 
-    if (event.detail.counter >= event.detail.amount) {
+    if (counter >= amount) {
       arrowRight.style.display = 'none';
-    } else if (event.detail.counter <= 0) {
+    } else if (counter <= 0) {
       arrowLeft.style.display = 'none';
     } else {
       arrowRight.style.display = '';
       arrowLeft.style.display = '';
     }
 
-    carousel.style.transform = `translateX(${-event.detail.counter * slide.offsetWidth}px)`;
+    carousel.style.transform = `translateX(${-counter * slide.offsetWidth}px)`;
+
+    return counter;
   }
 
   get elem() {
