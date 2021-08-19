@@ -5,6 +5,24 @@ export default class Carousel {
     this._slides = slides;
     this._counterSlide = 0;
 
+    this.render();
+    
+    this._elem.addEventListener('click', 
+      (event) => this.addProduct(this._elem, event));
+    
+    
+    this._elem.querySelector('.carousel__arrow_left')
+      .style.display = 'none';
+      
+    this._elem.querySelector('.carousel__arrow_right')
+      .addEventListener('click', (event) => 
+        this._counterSlide = this.changeSlide(this._elem, this._counterSlide, this._slides.length - 1, event));
+    this._elem.querySelector('.carousel__arrow_left')
+      .addEventListener('click', (event) => 
+        this._counterSlide = this.changeSlide(this._elem, this._counterSlide, this._slides.length - 1, event));
+  }
+
+  render() {
     this._elem = createElement(`
       <div class="carousel">
         <div class="carousel__arrow carousel__arrow_right">
@@ -13,12 +31,12 @@ export default class Carousel {
         <div class="carousel__arrow carousel__arrow_left">
           <img src="/assets/images/icons/angle-left-icon.svg" alt="icon">
         </div>
-
+  
         <div class="carousel__inner">
         </div>
       </div>`);
-
-    for (const slide of slides) {
+  
+    for (const slide of this._slides) {
       let slideElem = createElement(`
         <div class="carousel__slide" data-id="${slide.id}">
           <img src="/assets/images/carousel/${slide.image}" class="carousel__img" alt="slide">
@@ -30,30 +48,19 @@ export default class Carousel {
             </button>
           </div>
         </div>`);
-
+  
       this._elem.querySelector('.carousel__inner').append(slideElem);
     }
-
-    this._elem.querySelector('.carousel__arrow_left')
-      .style.display = 'none';
-
-    
-    this._elem.querySelector('.carousel__arrow_right')
-      .addEventListener('click', (event) => 
-        this._counterSlide = this.changeSlide(this._elem, this._counterSlide, this._slides.length - 1, event));
-    this._elem.querySelector('.carousel__arrow_left')
-      .addEventListener('click', (event) => 
-        this._counterSlide = this.changeSlide(this._elem, this._counterSlide, this._slides.length - 1, event));
   }
-
+  
 
   changeSlide(elem, counter, amount, event) {
     let carousel = elem.querySelector('.carousel__inner');
     let slide = elem.querySelector('.carousel__slide');
-
+    
     let arrowRight = elem.querySelector('.carousel__arrow_right');
     let arrowLeft = elem.querySelector('.carousel__arrow_left');
-
+    
     if (event.currentTarget === arrowLeft) {
       counter--;
     } else if (event.currentTarget === arrowRight) {
@@ -74,40 +81,22 @@ export default class Carousel {
     return counter;
   }
 
+  addProduct(elem, event) {
+    let target = event.target;
+    // eslint-disable-next-line curly
+    if (!(target.closest(".carousel__button"))) return;
+
+    let customEvent = new CustomEvent('product-add', {
+      detail: target.closest('.carousel__slide').dataset.id,
+      bubbles: true
+    });
+
+    elem.dispatchEvent(customEvent);
+
+    console.log('Hello!');
+  }
+
   get elem() {
     return this._elem;
   }
-}
-
-function initCarousel() {
-  let arrowRight = document.querySelector('.carousel__arrow_right');
-  let arrowLeft = document.querySelector('.carousel__arrow_left');
-
-  let carousel = document.querySelector('.carousel__inner');
-  let slide = document.querySelector('.carousel__slide');
-
-  let counterSlide = 0;
-  arrowLeft.style.display = 'none';
-  
-  function changeSlide(event) {
-    if (event.currentTarget === arrowLeft) {
-      counterSlide--;
-    } else if (event.currentTarget === arrowRight) {
-      counterSlide++;
-    }
-
-    if (counterSlide >= 3) {
-      arrowRight.style.display = 'none';
-    } else if (counterSlide <= 0) {
-      arrowLeft.style.display = 'none';
-    } else {
-      arrowRight.style.display = '';
-      arrowLeft.style.display = '';
-    }
-
-    carousel.style.transform = `translateX(${-counterSlide * slide.offsetWidth}px)`;
-  }
-
-  arrowLeft.addEventListener('click', changeSlide);
-  arrowRight.addEventListener('click', changeSlide);
 }
