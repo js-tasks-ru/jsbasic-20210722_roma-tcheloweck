@@ -136,10 +136,9 @@ export default class StepSlider {
       this._elem.classList.remove('slider_dragging');
 
       this._elem.removeEventListener('pointermove', onPointerMove);
-      this._elem.removeEventListener('pointerup', onPointerUp);
     };
     
-    this._elem.addEventListener('pointerup', onPointerUp);
+    this._elem.addEventListener('pointerup', onPointerUp, { once: true });
   }
 
   get elem() {
