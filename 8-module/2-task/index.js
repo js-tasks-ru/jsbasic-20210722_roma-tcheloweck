@@ -28,7 +28,7 @@ export default class ProductGrid {
     Object.assign(this.filters, filters);
 
     let filteredArray = this.products.filter(item => {
-      return this.filters.noNuts === Boolean(item['nuts']) &&
+      return this.filters.noNuts !== Boolean(item['nuts']) &&
               this.filters.vegeterianOnly === Boolean(item['vegeterian']) &&
               this.filters.maxSpiciness >= item['spiciness'];
     });

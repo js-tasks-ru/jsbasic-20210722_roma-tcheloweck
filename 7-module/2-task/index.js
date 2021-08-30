@@ -42,12 +42,16 @@ export default class Modal {
   }
 
   close = (event) => {
-    // eslint-disable-next-line curly
-    if (event.type === "keydown" && event.code !== "Escape") return;
+    if (event) {
+      if (event.type === "keydown" && event.code !== "Escape") {
+        return;
+      }
+    }   
 
     document.body.classList.remove('is-modal-open');
     document.removeEventListener('click', close);
     this._elem.remove();
+    this._elem = null;
   }
 
   get elem() {
