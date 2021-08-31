@@ -49,9 +49,11 @@ export default class Modal {
     }   
 
     document.body.classList.remove('is-modal-open');
-    document.removeEventListener('click', close);
-    this._elem.remove();
-    this._elem = null;
+    if (this._elem) {
+      this._elem.removeEventListener('click', this.close);
+      this._elem.remove();
+      this._elem = null;
+    }
   }
 
   get elem() {

@@ -40,8 +40,10 @@ export default class CartIcon {
   }
 
   updatePosition = () => {
+    let container = document.querySelector('.container');
+    if (!container) throw 1;
     let leftIndent = Math.min(
-      document.querySelector('.container').getBoundingClientRect().right + 20,
+      container.getBoundingClientRect().right + 20,
       document.documentElement.clientWidth - this.elem.offsetWidth - 10
     ) + 'px';
 

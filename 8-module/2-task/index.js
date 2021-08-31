@@ -22,17 +22,24 @@ export default class ProductGrid {
         </div>
       </div>
     `);
+
+    let gridInner = this._elem.querySelector('.products-grid__inner');
+    for (const product of this.products) {
+      let productCard = new ProductCard(product);
+      gridInner.append(productCard.elem);
+    }
   }
 
   updateFilter(filters) {
     Object.assign(this.filters, filters);
 
-    let filteredArray = this.products.filter(item => {
-      return this.filters.noNuts !== Boolean(item['nuts']) &&
-              this.filters.vegeterianOnly === Boolean(item['vegeterian']) &&
-              this.filters.maxSpiciness >= item['spiciness'];
-    });
-
+    let filteredArray = this.products.filter(item => this.filters.maxSpiciness >= item['spiciness']);
+    if (this.filters.noNuts) {
+      filteredArray = filteredArray.filter(item => this.filters.noNuts !== Boolean(item['nuts']));
+    }
+    if (this.filters.vegeterianOnly) {
+      filteredArray = filteredArray.filter(item => this.filters.vegeterianOnly === Boolean(item['vegeterian']));
+    }
     if (this.filters.category) {
       filteredArray = filteredArray.filter(item => this.filters.category === item['category']);
     }

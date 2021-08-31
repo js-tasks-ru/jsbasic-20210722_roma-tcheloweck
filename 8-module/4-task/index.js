@@ -190,7 +190,7 @@ export default class Cart {
       body: formData
     }).then(response => {
       if (response.ok) {
-        this.modalWindow.setTitle(`'Success!'`);
+        this.modalWindow.setTitle(`Success!`);
         this.cartItems.length = 0;
         this.modalWindow.setBody(createElement(`
           <div class="modal__body-inner">
