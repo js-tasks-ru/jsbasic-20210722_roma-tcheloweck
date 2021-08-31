@@ -45,7 +45,7 @@
 
     <div class="controls__row">
       <label class="subheading">
-        <input type="checkbox" data-category> Показать товары категории "soups"
+        <input type="checkbox" data-category> Показать товары категории "seafood-dishes"
       </label>
     </div>
   </div>
@@ -82,7 +82,7 @@
     let categoryControl = document.querySelector('[data-category]');
     categoryControl.addEventListener('change', () => {
       if (event.target.checked) {
-        productGrid.updateFilter({ category: 'soups' });
+        productGrid.updateFilter({ category: 'seafood-dishes' });
       } else {
         productGrid.updateFilter({ category: '' });
       }
