@@ -22,7 +22,7 @@ export default class ProductCard {
     this._elem.querySelector('.card__button').addEventListener('click', this.addInList);
   }
 
-  addInList = (event) => {
+  addInList = () => {
     let productAdd = new CustomEvent('product-add', 
       {
         detail: this.product,

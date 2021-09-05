@@ -86,7 +86,7 @@ export default class Carousel {
     if (!(target.closest(".carousel__button"))) return;
     let id = target.closest('.carousel__slide').dataset.id;
 
-    let product = products.find(item => item.id === id);
+    let product = (products) ? products.find(item => item.id === id) : id;
 
     let customEvent = new CustomEvent('product-add', {
       detail: product,
@@ -94,8 +94,6 @@ export default class Carousel {
     });
 
     elem.dispatchEvent(customEvent);
-
-    console.log('Hello!');
   }
 
   get elem() {
