@@ -18,28 +18,58 @@ export default class Main {
   }
 
   async render() {
-    return new Promise((resolve, reject) => {
-      let carousel = new Carousel(slides);
-      document.querySelector('[data-carousel-holder]').append(carousel.elem);
+    this.carousel = new Carousel(slides);
+    document.querySelector('[data-carousel-holder]').append(this.carousel.elem);
 
-      let ribbonMenu = new RibbonMenu(categories);
-      document.querySelector('[data-ribbon-holder]').append(ribbonMenu.elem);
+    this.ribbonMenu = new RibbonMenu(categories);
+    document.querySelector('[data-ribbon-holder]').append(this.ribbonMenu.elem);
 
-      let slider = new StepSlider(5, 3);
-      document.querySelector('[data-slider-holder]').append(slider.elem);
+    this.stepSlider = new StepSlider(5, 3);
+    document.querySelector('[data-slider-holder]').append(this.stepSlider.elem);
 
-      let cartIcon = new CartIcon();
-      document.querySelector('[data-cart-icon-holder]').append(cartIcon.elem);
+    this.cartIcon = new CartIcon();
+    document.querySelector('[data-cart-icon-holder]').append(this.cartIcon.elem);
 
-      let cart = new Cart(cartIcon);
+    this.cart = new Cart(this.cartIcon);
 
-      let products = await fetch('products.json', { method: 'POST' })
-        .then(response => JSON.parse(response))
-        .catch(console.log('Ошибка при получении товаров с сервера!'));
-    
-      let grid = new ProductsGrid(products);
-      document.querySelector('[data-products-grid-holder]').append(grid.elem);
+    this.products = await fetch('products.json')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Ошибка при получении товаров с сервера!');
+        }
+      });
+  
+    this.productsGrid = new ProductsGrid(this.products);
+    document.querySelector('[data-products-grid-holder]').innerHTML = '';
+    document.querySelector('[data-products-grid-holder]').append(this.productsGrid.elem);
 
+    this.productsGrid.updateFilter({
+      noNuts: document.getElementById('nuts-checkbox').checked,
+      vegeterianOnly: document.getElementById('vegeterian-checkbox').checked,
+      maxSpiciness: this.stepSlider.value,
+      category: this.ribbonMenu.value
     });
+
+    document.body.addEventListener('product-add', (event) => {
+      this.cart.addProduct(event.detail);
+    });
+    this.stepSlider.elem.addEventListener(
+      'slider-change', (event) => this.productsGrid.updateFilter({
+        maxSpiciness: event.detail
+      }));
+    this.ribbonMenu.elem.addEventListener(
+      'ribbon-select', (event) => this.productsGrid.updateFilter({
+        category: event.detail
+      }));
+    document.getElementById('nuts-checkbox').addEventListener(
+      'change', (event) => this.productsGrid.updateFilter({
+        noNuts: document.getElementById('nuts-checkbox').checked
+      }));
+    document.getElementById('vegeterian-checkbox').addEventListener(
+      'change', (event) => this.productsGrid.updateFilter({
+        vegeterianOnly: document.getElementById('vegeterian-checkbox').checked
+      }));
   }
 }

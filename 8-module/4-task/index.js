@@ -14,12 +14,12 @@ export default class Cart {
 
   addProduct(product) {
     // eslint-disable-next-line curly
-    if (product == null || product == undefined) return;
+    if (!product) return;
 
     let isItemInList = false;
 
     this.cartItems.forEach((item, index) => {
-      if (product === item.product) {
+      if (product.id === item.product.id) {
         this.cartItems[index].count++;
         isItemInList = true;
       }
