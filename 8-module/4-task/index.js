@@ -19,7 +19,7 @@ export default class Cart {
     let isItemInList = false;
 
     this.cartItems.forEach((item, index) => {
-      if (product.id === item.product.id) {
+      if (product === item.product) {
         this.cartItems[index].count++;
         isItemInList = true;
       }

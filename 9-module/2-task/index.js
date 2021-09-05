@@ -18,7 +18,16 @@ export default class Main {
   }
 
   async render() {
-    this.carousel = new Carousel(slides);
+    this.products = await fetch('products.json')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Ошибка при получении товаров с сервера!');
+        }
+      });
+
+    this.carousel = new Carousel(slides, this.products);
     document.querySelector('[data-carousel-holder]').append(this.carousel.elem);
 
     this.ribbonMenu = new RibbonMenu(categories);
@@ -31,15 +40,6 @@ export default class Main {
     document.querySelector('[data-cart-icon-holder]').append(this.cartIcon.elem);
 
     this.cart = new Cart(this.cartIcon);
-
-    this.products = await fetch('products.json')
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Ошибка при получении товаров с сервера!');
-        }
-      });
   
     this.productsGrid = new ProductsGrid(this.products);
     document.querySelector('[data-products-grid-holder]').innerHTML = '';
