@@ -82,7 +82,7 @@ describe('6-module-2-task', () => {
     });
 
     it('созданное событие должно содержать в себе уникальный идентификатор товара ("id")', () => {
-      expect(productAddEvent.detail).toBe(product.id);
+      expect(productAddEvent.detail).toBe(product);
     });
   });
 });

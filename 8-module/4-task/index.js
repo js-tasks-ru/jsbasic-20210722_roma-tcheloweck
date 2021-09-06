@@ -14,7 +14,7 @@ export default class Cart {
 
   addProduct(product) {
     // eslint-disable-next-line curly
-    if (product == null || product == undefined) return;
+    if (!product) return;
 
     let isItemInList = false;
 

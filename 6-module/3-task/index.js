@@ -1,18 +1,17 @@
 import createElement from '../../assets/lib/create-element.js';
 
 export default class Carousel {
-  constructor(slides) {
+  constructor(slides, products) {
     this._slides = slides;
     this._counterSlide = 0;
 
     this.render();
     
     this._elem.addEventListener('click', 
-      (event) => this.addProduct(this._elem, event));
+      (event) => this.addProduct(this._elem, products, event));
     
     
-    this._elem.querySelector('.carousel__arrow_left')
-      .style.display = 'none';
+    this._elem.querySelector('.carousel__arrow_left').style.display = 'none';
       
     this._elem.querySelector('.carousel__arrow_right')
       .addEventListener('click', (event) => 
@@ -81,19 +80,20 @@ export default class Carousel {
     return counter;
   }
 
-  addProduct(elem, event) {
+  addProduct(elem, products, event) {
     let target = event.target;
     // eslint-disable-next-line curly
     if (!(target.closest(".carousel__button"))) return;
+    let id = target.closest('.carousel__slide').dataset.id;
+
+    let product = (products) ? products.find(item => item.id === id) : id;
 
     let customEvent = new CustomEvent('product-add', {
-      detail: target.closest('.carousel__slide').dataset.id,
+      detail: product,
       bubbles: true
     });
 
     elem.dispatchEvent(customEvent);
-
-    console.log('Hello!');
   }
 
   get elem() {

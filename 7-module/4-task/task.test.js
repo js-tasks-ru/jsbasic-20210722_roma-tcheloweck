@@ -10,11 +10,6 @@ describe('7-module-4-task', () => {
   let config;
 
   beforeEach(() => {
-    config = {
-      steps: 3,
-      value: 0,
-    }
-
     styleElement = createElement(`
       <style>
         .container {
@@ -117,7 +112,7 @@ describe('7-module-4-task', () => {
     document.body.append(styleElement);
     document.body.append(mainElements);
 
-    stepSlider = new StepSlider(config);
+    stepSlider = new StepSlider(3, 0);
 
     let holder = document.querySelector('#holder');
     holder.append(stepSlider.elem);

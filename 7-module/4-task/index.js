@@ -1,6 +1,6 @@
 import createElement from '../../assets/lib/create-element.js';
 export default class StepSlider {
-  constructor({ steps, value = 0 }) {
+  constructor(steps, value = 4) {
     this._steps = steps;
     this._value = value;
 
@@ -37,12 +37,15 @@ export default class StepSlider {
       }
     }
 
-    this._elem.querySelector('.slider__progress').style.width = 0;
+    this._sections = this._steps - 1;
+    this._position = this._value * Math.round(100 / this._sections) + "%";
+    this._elem.querySelector('.slider__thumb').style.left = this._position;
+    this._elem.querySelector('.slider__progress').style.width = this._position;
   }
 
   step = (event) => {
     let steps = this._steps;
-    let sections = steps - 1;
+    let sections = this._sections;
     let sectionWidth = Math.floor(this._elem.offsetWidth / sections);
 
     if (event.offsetX >= 0 && event.offsetX < sectionWidth / 2) {
@@ -67,9 +70,9 @@ export default class StepSlider {
     this._elem.querySelector('.slider__step-active').classList.remove('slider__step-active');
     this._elem.querySelector(`span:nth-child(${this._value + 1})`).classList.add('slider__step-active');
 
-    let position = this._value * Math.round(100 / sections) + "%";
-    this._elem.querySelector('.slider__thumb').style.left = position;
-    this._elem.querySelector('.slider__progress').style.width = position;
+    this._position = this._value * Math.round(100 / sections) + "%";
+    this._elem.querySelector('.slider__thumb').style.left = this._position;
+    this._elem.querySelector('.slider__progress').style.width = this._position;
 
     this._elem.dispatchEvent(new CustomEvent('slider-change', {
       detail: this._value,
@@ -143,5 +146,8 @@ export default class StepSlider {
 
   get elem() {
     return this._elem;
+  }
+  get value() {
+    return this._value;
   }
 }
